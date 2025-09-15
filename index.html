@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropout Predictor</title>
+  <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+  <header>
+    <h1>Dropout Predictor</h1>
+  </header>
+  <main>
+    <form class="upload-files" id="uploadForm" method="post" enctype="multipart/form-data" action="">
+      <legend>Upload Required Files</legend>
+      <p>Upload 3 XLSX files containing student data</p>
+        <div class="upload-academics"></div>
+          <label for="academics">Academics (.xlsx file): <small>Contains marks data (mark1, mark2, mark3)</small></label>
+          <input type="file" id="academics" name="academics" accept=".xlsx" required>          
+        </div>
+        <div class="upload-attendance">
+          <label for="attendance">Attendance (.xlsx file): <small>Contains attendance percentage</small></label>
+          <input type="file" id="attendance" name="attendance" accept=".xlsx" required>
+        </div>
+        <div class="upload-financial-data">
+          <label for="monetary">Financial Data (.xlsx file): <small>Contains financial information</small></label>
+          <input type="file" id="monetary" name="monetary" accept=".xlsx" required>
+        </div>
+        <div>
+          <button class="js-predict-button" type="submit">Predict</button>
+        </div>
+    </form>
+  </main>
+  <script src="scripts/index.js"></script>
+</body>
+</html>
