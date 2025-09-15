@@ -1,11 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dropout Predictor</title>
-  <link rel="stylesheet" href="styles/styles.css">
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f4f6fa;
+      color: #333;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: #2563eb;
+      padding: 1rem;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    /* Main content */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+    }
+
+    /* Upload form */
+    .upload-files {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    legend {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    /* Form groups */
+    .upload-files>div {
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #444;
+    }
+
+    /* File input */
+    input[type="file"] {
+      display: block;
+      width: 100%;
+      padding: 0.4rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: #eef3ff;
+    }
+
+    /* Predict button */
+    .js-predict-button {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .js-predict-button:hover {
+      background: #1d4ed8;
+    }
+
+    .js-predict-button:active {
+      transform: scale(0.97);
+    }
+
+    .js-predict-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .upload-files {
+        padding: 1.25rem;
+      }
+
+      legend {
+        font-size: 1.05rem;
+      }
+
+      .js-predict-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>Dropout Predictor</h1>
@@ -14,23 +149,56 @@
     <form class="upload-files" id="uploadForm" method="post" enctype="multipart/form-data" action="">
       <legend>Upload Required Files</legend>
       <p>Upload 3 XLSX files containing student data</p>
-        <div class="upload-academics"></div>
-          <label for="academics">Academics (.xlsx file): <small>Contains marks data (mark1, mark2, mark3)</small></label>
-          <input type="file" id="academics" name="academics" accept=".xlsx" required>          
-        </div>
-        <div class="upload-attendance">
-          <label for="attendance">Attendance (.xlsx file): <small>Contains attendance percentage</small></label>
-          <input type="file" id="attendance" name="attendance" accept=".xlsx" required>
-        </div>
-        <div class="upload-financial-data">
-          <label for="monetary">Financial Data (.xlsx file): <small>Contains financial information</small></label>
-          <input type="file" id="monetary" name="monetary" accept=".xlsx" required>
-        </div>
-        <div>
-          <button class="js-predict-button" type="submit">Predict</button>
-        </div>
+      <div class="upload-academics"></div>
+      <label for="academics">Academics (.xlsx file): <small>Contains marks data (mark1, mark2, mark3)</small></label>
+      <input type="file" id="academics" name="academics" accept=".xlsx" required>
+      </div>
+      <div class="upload-attendance">
+        <label for="attendance">Attendance (.xlsx file): <small>Contains attendance percentage</small></label>
+        <input type="file" id="attendance" name="attendance" accept=".xlsx" required>
+      </div>
+      <div class="upload-financial-data">
+        <label for="monetary">Financial Data (.xlsx file): <small>Contains financial information</small></label>
+        <input type="file" id="monetary" name="monetary" accept=".xlsx" required>
+      </div>
+      <div>
+        <button class="js-predict-button" type="submit">Predict</button>
+      </div>
     </form>
   </main>
-  <script src="scripts/script.js"></script>
+  <script>
+    const buttonElement = document.querySelector(".js-predict-button");
+    buttonElement.addEventListener("click", async () => {
+      const academicsFile = document.getElementById("academics").files[0];
+      const academicsUrl = "";
+      const attendanceFile = document.getElementById("attendance").files[0];
+      const attendanceUrl = "";
+      const monetaryFile = document.getElementById("monetary").files[0];
+      const monetaryUrl = "";
+      uploadFile(academicsFile, academicsUrl);
+      uploadFile(attendanceFile, attendanceUrl);
+      uploadFile(monetaryFile, monetaryUrl);
+    });
+
+    const uploadFile = async (formData, url) => {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("File uploaded successfully:", result);
+        } else {
+          console.error("File upload failed:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error during file upload:", error);
+      }
+    };
+
+  </script>
 </body>
+
 </html>
