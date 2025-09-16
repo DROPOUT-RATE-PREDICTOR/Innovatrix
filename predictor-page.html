@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropout Predictor</title>
+  <link rel="stylesheet" href="styles/predictor-page.css">
+</head>
+<body>
+  <header>
+    <h1>Dropout Predictor Demo-Session</h1>
+  </header>
+  <main>
+    <h3>Enter User Credentials:</h3>
+    <form class="js-form">
+      <div class="form-group">
+        <label for="marks1">Subject A</label>
+        <input type="number" id="marks1" name="marks1" placeholder="Enter marks" required>
+      </div>
+      <div class="form-group">
+        <label for="marks2">Subject B</label>
+        <input type="number" id="marks2" name="marks2" placeholder="Enter marks" required>
+      </div>
+      <div class="form-group">
+        <label for="marks3">Subject C</label>
+        <input type="number" id="marks3" name="marks3" placeholder="Enter marks" required>
+      </div>
+      <div class="form-group">
+        <label for="attendance">Attendance</label>
+        <input type="number" id="attendance" name="attendance" min="0" max="100" placeholder="Enter attendance (in %)" required>
+      </div>
+      <div class="form-group">
+        <span id="fee-status-label">Fee Status</span>
+        <div class="radio-group">
+          <label for="fee-paid"><input type="radio" id="fee-paid" name="fee" value="1" required> Paid</label>
+          <label for="fee-unpaid"><input type="radio" id="fee-unpaid" name="fee" value="0" required> Unpaid</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <span id="loan-status-label">Education Loan</span>
+        <div class="radio-group">
+          <label for="loan-taken"><input type="radio" id="loan-taken" name="loan" value="1" required> Taken</label>
+          <label for="loan-not-taken"><input type="radio" id="loan-not-taken" name="loan" value="0" required> Not Taken</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="yearly-income">Yearly Income</label>
+        <input type="number" id="yearly-income" name="yearly-income" min="0" max="2000000" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="Enter yearly-income (in ₹)">
+      </div>
+      <div class="form-group">
+        <label for="yearly-fee">Yearly Fees</label>
+        <input type="number" id="yearly-fee" name="yearly-fee" min="0" max="400000" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required placeholder="Enter yearly-fee (in ₹)">
+      </div>
+      <button class= "js-submit-button" type="submit">Predict</button>
+    </form>
+  </main>
+  <footer>
+    Copyright &copy; 2025 Innovatrix
+  </footer>
+</body>
+<script src="scripts/predictor-page.js"></script>
+</html>

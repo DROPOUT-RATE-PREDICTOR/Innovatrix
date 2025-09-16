@@ -6,7 +6,6 @@
     <title>Student Performance Predictor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='predictor-upload-files.css') }}">
     <style>
-        /* Government Website Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -22,7 +21,6 @@ body {
     line-height: 1.5;
 }
 
-/* Government Header Bar */
 body::before {
     content: '';
     position: fixed;
@@ -34,7 +32,6 @@ body::before {
     z-index: 1000;
 }
 
-/* Container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -45,7 +42,7 @@ body::before {
     padding: 40px 60px;
 }
 
-/* Government Header Section */
+
 .container::before {
     content: 'DEPARTMENT OF EDUCATION';
     display: block;
@@ -60,7 +57,7 @@ body::before {
     border-bottom: 3px solid #bf0a30;
 }
 
-/* Typography */
+
 h1 {
     color: #003366;
     font-size: 2.2rem;
@@ -82,7 +79,7 @@ p {
     font-weight: normal;
 }
 
-/* Official Seal/Logo Area */
+
 h1::before {
     content: '🏛️';
     display: block;
@@ -91,7 +88,6 @@ h1::before {
     color: #003366;
 }
 
-/* Info box - Official Notice Style */
 .info-box {
     background: #e8f4fd;
     border: 2px solid #0066cc;
@@ -169,7 +165,7 @@ h1::before {
     text-transform: none;
 }
 
-/* Form styles - Government Form Design */
+
 #uploadForm {
     margin-bottom: 30px;
     background: #fafafa;
@@ -257,7 +253,6 @@ h1::before {
     border-left: 3px solid #ffc107;
 }
 
-/* Government Button Style */
 #predictBtn {
     width: 100%;
     background: #0066cc;
@@ -297,7 +292,7 @@ h1::before {
     cursor: not-allowed;
 }
 
-/* Loading styles - Official Processing */
+
 #loading {
     text-align: center;
     padding: 30px;
@@ -329,7 +324,7 @@ h1::before {
     letter-spacing: 0.5px;
 }
 
-/* Results styles - Official Report Format */
+
 #results {
     background: #d4edda;
     border: 2px solid #28a745;
@@ -374,7 +369,7 @@ h1::before {
     border-left: 4px solid #28a745;
 }
 
-/* Student result cards - Official Record Format */
+
 .student-result {
     background: white;
     border: 2px solid #dee2e6;
@@ -464,7 +459,7 @@ h1::before {
     border: 1px solid #4a5568;
 }
 
-/* Error styles - Official Alert */
+
 #error {
     background: #f8d7da;
     border: 2px solid #dc3545;
@@ -489,7 +484,7 @@ h1::before {
     letter-spacing: 1px;
 }
 
-/* Footer - Government Disclaimer */
+
 .container::after {
     display: block;
     background: #6c757d;
@@ -502,7 +497,7 @@ h1::before {
     line-height: 1.4;
 }
 
-/* Responsive design */
+
 @media (max-width: 768px) {
     .container {
         padding: 30px 40px;
