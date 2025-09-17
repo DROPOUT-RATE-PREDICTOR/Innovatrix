@@ -33,13 +33,13 @@ export default class Login {
     }
   }
 
-  static getUserByPhone = async(phone_no) => {
-    try{
-      const user = await Users.findOne({ phone_no: phone_no });
-      return user;
-    } catch(err) {
-      console.error(`No user found: ${err}`);
-      return {error: err};
+static async getUserByDetails(name, dob, phone_no) {
+    try {
+      return await Users.findOne({ name, dob, phone_no });
+    } catch (e) {
+      console.error("Error in getUserByDetails:", e);
+      return { error: e };
     }
   }
+  
 }
