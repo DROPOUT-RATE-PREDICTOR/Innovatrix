@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Performance Predictor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='predictor-upload-files.css') }}">
+    <title>Student DROPOUT Predictor</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
 * {
     margin: 0;
@@ -42,7 +42,6 @@ body::before {
     padding: 40px 60px;
 }
 
-
 .container::before {
     content: 'DEPARTMENT OF EDUCATION';
     display: block;
@@ -56,7 +55,6 @@ body::before {
     margin: -40px -60px 30px -60px;
     border-bottom: 3px solid #bf0a30;
 }
-
 
 h1 {
     color: #003366;
@@ -78,7 +76,6 @@ p {
     margin-bottom: 30px;
     font-weight: normal;
 }
-
 
 h1::before {
     content: '🏛️';
@@ -165,7 +162,6 @@ h1::before {
     text-transform: none;
 }
 
-
 #uploadForm {
     margin-bottom: 30px;
     background: #fafafa;
@@ -175,7 +171,7 @@ h1::before {
 }
 
 #uploadForm::before {
-    content: 'FORM GSA-001: STUDENT DATA UPLOAD';
+    content: 'FORM : STUDENT DATA UPLOAD';
     display: block;
     background: #6c757d;
     color: white;
@@ -292,7 +288,6 @@ h1::before {
     cursor: not-allowed;
 }
 
-
 #loading {
     text-align: center;
     padding: 30px;
@@ -324,7 +319,6 @@ h1::before {
     letter-spacing: 0.5px;
 }
 
-
 #results {
     background: #d4edda;
     border: 2px solid #28a745;
@@ -334,7 +328,7 @@ h1::before {
 }
 
 #results::before {
-    content: 'OFFICIAL REPORT - CONFIDENTIAL';
+    content: 'PREDICTION RESULTS';
     position: absolute;
     top: -12px;
     left: 20px;
@@ -368,7 +362,6 @@ h1::before {
     padding: 15px;
     border-left: 4px solid #28a745;
 }
-
 
 .student-result {
     background: white;
@@ -459,9 +452,8 @@ h1::before {
     border: 1px solid #4a5568;
 }
 
-
 #error {
-    background: #f8d7da;
+    background: 'red';
     border: 2px solid #dc3545;
     border-left: 6px solid #bf0a30;
     padding: 20px;
@@ -484,6 +476,101 @@ h1::before {
     letter-spacing: 1px;
 }
 
+#visualization {
+    margin-top: 30px;
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 20px;
+    position: relative;
+}
+
+#visualization::before {
+    content: 'PREDICTION VISUALIZATION';
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: white;
+    color: #6c757d;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+#visualization h2 {
+    color: #003366;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 15px;
+}
+
+.visualization-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.gauge-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 60%;
+}
+
+.details-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 38%;
+}
+
+#gauge {
+    width: 100%;
+    height: 400px;
+}
+
+.student-details-panel {
+    background: white;
+    border: 2px solid #dee2e6;
+    border-left: 6px solid #0066cc;
+    padding: 15px;
+    height: 400px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.student-details-panel h3 {
+    color: #003366;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.student-details-panel h4 {
+    color: #bf0a30;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.student-details-panel p {
+    text-align: left;
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.student-details-panel strong {
+    color: #003366;
+    font-weight: bold;
+}
 
 .container::after {
     display: block;
@@ -496,7 +583,6 @@ h1::before {
     border-top: 3px solid #003366;
     line-height: 1.4;
 }
-
 
 @media (max-width: 768px) {
     .container {
@@ -526,6 +612,14 @@ h1::before {
     #error::before {
         margin-left: -20px;
         margin-right: -20px;
+    }
+    
+    .visualization-container {
+        flex-direction: column;
+    }
+    
+    .gauge-container, .details-container {
+        max-width: 100%;
     }
 }
 
@@ -571,7 +665,7 @@ h1::before {
         <div class="info-box">
             <strong>Required Files:</strong>
             <ul>
-                <li>1. <strong>academics.xlsx</strong> - Contains marks data (mark1, mark2, mark3)</li>
+                <li>1. <strong>academics.xlsx</strong> - Contains Scores </li>
                 <li>2. <strong>attendance.xlsx</strong> - Contains attendance percentage</li>
                 <li>3. <strong>financial-data.xlsx</strong> - Contains financial information</li>
             </ul>
@@ -582,7 +676,7 @@ h1::before {
                 <div class="file-input">
                     <label>Academics File:</label>
                     <input type="file" name="files" accept=".xlsx,.xls" required>
-                    <small>Contains marks data (mark1, mark2, mark3)</small>
+                    <small>Contains Scores</small>
                 </div>
                 <div class="file-input">
                     <label>Attendance File:</label>
@@ -608,72 +702,158 @@ h1::before {
             <div id="resultsContent"></div>
         </div>
         
-        <div id="error" style="display: none; color: red;"></div>
+        <div id="error" style="display: none;"></div>
+        
+        <div id="visualization" style="display: none;">
+            <h2>Prediction Visualization</h2>
+            <div class="visualization-container">
+                <div class="gauge-container">
+                    <div id="gauge"></div>
+                </div>
+                <div class="details-container">
+                    <div id="studentDetailsPanel" class="student-details-panel"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData();
-            const files = document.querySelectorAll('input[type="file"]');
-            
-            files.forEach(file => {
-                if (file.files[0]) {
-                    formData.append('files', file.files[0]);
-                }
-            });
-            
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-            document.getElementById('error').style.display = 'none';
-            
-            try {
-                const response = await fetch('/predict', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                document.getElementById('loading').style.display = 'none';
-                
-                if (data.success) {
-                    displayResults(data);
-                } else {
-                    showError(data.error);
-                }
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                showError('Network error');
-            }
-        });
-        
-        function displayResults(data) {
-            const resultsDiv = document.getElementById('resultsContent');
-            resultsDiv.innerHTML = `
-                <p>Total students processed: ${data.total_students}</p>
-                <div class="predictions">
-                    ${data.predictions.map(student => `
-                        <div class="student-result">
-                            <h3>Student ${student.student_id}</h3>
-                            <p><strong>Prediction:</strong> ${student.prediction}</p>
-                            <div class="features">
-                                <strong>Extracted Features:</strong>
-                                <pre>${JSON.stringify(student.features, null, 2)}</pre>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            document.getElementById('results').style.display = 'block';
-        }
-        
-        function showError(message) {
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
+      document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const formData = new FormData();
+          const files = document.querySelectorAll('input[type="file"]');
+          
+          files.forEach(file => {
+              if (file.files[0]) {
+                  formData.append('files', file.files[0]);
+              }
+          });
+          
+          document.getElementById('loading').style.display = 'block';
+          document.getElementById('results').style.display = 'none';
+          document.getElementById('error').style.display = 'none';
+          document.getElementById('visualization').style.display = 'none';
+          
+          try {
+              const response = await fetch('/predict', {
+                  method: 'POST',
+                  body: formData
+              });
+              
+              const data = await response.json();
+              
+              document.getElementById('loading').style.display = 'none';
+              
+              if (data.success) {
+                  displayResults(data);
+              } else {
+                  showError(data.error || 'Unknown error occurred');
+              }
+          } catch (error) {
+              document.getElementById('loading').style.display = 'none';
+              showError('Network error: ' + error.message);
+          }
+      });
+      
+      function displayResults(data) {
+          const resultsDiv = document.getElementById('resultsContent');
+          resultsDiv.innerHTML = `
+              <div class="prediction-result">
+                  <h3>Prediction Result</h3>
+                  <p><strong>Prediction:</strong> ${data.prediction}</p>
+                  <p><strong>Probability:</strong> ${(data.Probability * 100).toFixed(2)}%</p>
+              </div>
+          `;
+          document.getElementById('results').style.display = 'block';
+          
+          document.getElementById('visualization').style.display = 'block';
+          
+          if (data.gauge_chart) {
+              const gaugeDiv = document.getElementById('gauge');
+              gaugeDiv.innerHTML = '';
+              const figure = JSON.parse(data.gauge_chart);
+              Plotly.newPlot('gauge', figure.data, figure.layout);
+          }
+          
+          displayStudentDetails(data.student_details);
+      }
+      
+      function displayStudentDetails(details) {
+          const detailsPanel = document.getElementById('studentDetailsPanel');
+          detailsPanel.innerHTML = '';
+          
+          let detailsHTML = `
+              <h3>Student Details</h3>
+          `;
+          
+          if (details.subjects && Object.keys(details.subjects).length > 0) {
+              detailsHTML += `
+                  <div style="margin-bottom: 15px;">
+                      <h4>Academic Performance</h4>
+              `;
+              
+              for (const [subject, marks] of Object.entries(details.subjects)) {
+                  detailsHTML += `<p><strong>${subject}:</strong> ${marks} marks</p>`;
+              }
+              
+              detailsHTML += `</div>`;
+          }
+          
+          if (details.attendance && Object.keys(details.attendance).length > 0) {
+              detailsHTML += `
+                  <div style="margin-bottom: 15px;">
+                      <h4>Subject Attendance</h4>
+              `;
+              
+              for (const [subject, attendance] of Object.entries(details.attendance)) {
+                  detailsHTML += `<p><strong>${subject}:</strong> ${attendance}%</p>`;
+              }
+              
+              detailsHTML += `</div>`;
+          }
+          
+          if (details.overall_attendance) {
+              detailsHTML += `
+                  <p style="margin-bottom: 15px;"><strong>Overall Attendance:</strong> ${details.overall_attendance}%</p>
+              `;
+          }
+          
+          if (details.financial) {
+              detailsHTML += `
+                  <div style="margin-bottom: 15px;">
+                      <h4>Financial Information</h4>
+              `;
+              
+              if (details.financial.fee_paid_flag !== undefined) {
+                  const feeStatus = details.financial.fee_paid_flag ? 'Paid' : 'Pending';
+                  detailsHTML += `<p><strong>Fee Status:</strong> ${feeStatus}</p>`;
+              }
+              
+              if (details.financial.edu_loan_flag !== undefined) {
+                  const loanStatus = details.financial.edu_loan_flag ? 'Yes' : 'No';
+                  detailsHTML += `<p><strong>Education Loan:</strong> ${loanStatus}</p>`;
+              }
+              
+              if (details.financial.yearly_income !== undefined) {
+                  detailsHTML += `<p><strong>Yearly Income:</strong> ₹${details.financial.yearly_income.toLocaleString()}</p>`;
+              }
+              
+              if (details.financial.yearly_fees !== undefined) {
+                  detailsHTML += `<p><strong>Yearly Fees:</strong> ₹${details.financial.yearly_fees.toLocaleString()}</p>`;
+              }
+              
+              detailsHTML += `</div>`;
+          }
+          
+          detailsPanel.innerHTML = detailsHTML;
+      }
+      
+      function showError(message) {
+          const errorDiv = document.getElementById('error');
+          errorDiv.textContent = message;
+          errorDiv.style.display = 'block';
+      }
     </script>
 </body>
 </html>
